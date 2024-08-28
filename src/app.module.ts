@@ -11,17 +11,21 @@ import { join } from 'path'
 import { AppController } from "./app.controller"
 import { LoggerMiddleware, RequestTimeoutInterceptor, ThrottlerBehindProxyGuard, TransformInterceptor, ValidationPipe } from "./common"
 import { AllExceptionsFilter } from "./common/exceptions"
-import { validate } from "./common/validations/env.validation"
 import { configurations } from "./configs/config"
 import { WinstonConfigService } from "./configs/winston"
 import { MonitorModule, MonitorService } from "./modules/monitor"
-
+import { validate } from "./common/validations/env.validation"
+import { MongooseModule } from '@nestjs/mongoose';
+import { ShopsModule } from "./modules"
 require("dotenv").config()
+
+const modules = [ShopsModule]
 @Module({
     imports: [
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public')
-          }),
+        }),
+        MongooseModule.forRoot("mongodb+srv://shop-product:ndt20011@cluster0.gcjskbd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"),
         ConfigModule.forRoot({
             load: configurations,
             envFilePath: "./.env",
@@ -52,7 +56,8 @@ require("dotenv").config()
                     })
                 )
             })
-        })
+        }),
+        ...modules
     ],
     controllers: [AppController],
     providers: [

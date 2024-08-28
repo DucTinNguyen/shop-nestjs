@@ -21,5 +21,6 @@ export const MESSAGE_CODES = {
     TON_PROOF_INVALID: "ton_proof_invalid",
     TON_PROOF_EXPIRED: "ton_proof_expired",
     YOU_ARE_NOT_ELIGIBLE: "you_are_not_eligible",
-    AIRDROP_ALREADY_CLAIMED: "airdrop_already_claimed"
+    AIRDROP_ALREADY_CLAIMED: "airdrop_already_claimed",
+    ALREADY_EXIST: "already_exists",
 }
