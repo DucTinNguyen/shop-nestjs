@@ -1,0 +1,77 @@
+version: "3"
+
+services:
+    otel-collector:
+        image: otel/opentelemetry-collector:0.88.0
+        container_name: otel-collector
+        restart: unless-stopped
+        command: ["--config=/etc/otel-collector-config.yaml"]
+        volumes:
+            - ./opentelemetry/config.yaml:/etc/otel-collector-config.yaml
+        ports:
+            - "13133:13133" # health_check extension, which provides debugging and profiling endpoints
+            - "55679:55679" # zpages extension
+            - "4318:4318" # OTLP http receiver
+            - "4317:4317" # OTLP gRPC receiver
+            - "8888:8888" # Prometheus receiver metrics exposed by the Collector
+            - "8889:8889" # Prometheus exporter metrics
+        depends_on:
+            - jaeger-all-in-one
+            - prometheus
+
+    jaeger-all-in-one:
+        image: jaegertracing/all-in-one:latest
+        container_name: jaeger-all-in-one
+        restart: unless-stopped
+        ports:
+            - "16686:16686" # UI port
+            - "14268:14268" # accept jaeger.thrift directly from clients
+            - "14269:14269" # collector admin port: health check at / and metrics at /metrics
+
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        restart: unless-stopped
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        ports:
+            - "9090:9090"
+        command: ["--enable-feature=otlp-write-receiver"]
+        volumes:
+            - prometheus-data:/prometheus
+            - ./prometheus/config.yml:/prometheus/prometheus.yml
+
+    loki:
+        image: grafana/loki:2.9.0
+        container_name: loki
+        restart: unless-stopped
+        ports:
+            - "3100:3100"
+        command: ["-config.file=/etc/loki/local-config.yaml"]
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        restart: unless-stopped
+        ports:
+            - "7001:3000"
+        volumes:
+            - grafana-data:/var/lib/grafana
+            - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+            - ./grafana/provisioning:/etc/grafana/provisioning
+
+    node-exporter:
+        image: quay.io/prometheus/node-exporter:latest
+        container_name: node-exporter
+        restart: unless-stopped
+        network_mode: host
+        pid: host
+        command: ["--path.rootfs=/host"]
+        volumes:
+            - "/:/host:ro,rslave"
+
+volumes:
+    prometheus-data:
+        driver: local
+    grafana-data:
+        driver: local
