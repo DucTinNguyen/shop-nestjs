@@ -12,6 +12,9 @@ export class KeyToken {
     @Prop({ required: true })
     publicKey: string
 
+    @Prop({ required: true })
+    privateKey: string
+
     @Prop({ default: [] })
     refreshToken: string[]
 }

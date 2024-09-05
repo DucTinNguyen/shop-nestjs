@@ -49,7 +49,7 @@ export class ShopsService {
                     publicKeyEncoding: { type: "spki", format: "pem" },
                     privateKeyEncoding: { type: "pkcs8", format: "pem" },
                 })
-                const publicKeyString = await this.keyTokenService.createKeyToken(String(newShop._id), publicKey)
+                const publicKeyString = await this.keyTokenService.createKeyToken(String(newShop._id), publicKey, privateKey)
 
                 if (!publicKeyString) {
                     throw new HttpException("PublicKeyString error", HttpStatus.BAD_REQUEST, {

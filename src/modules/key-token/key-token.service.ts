@@ -10,12 +10,13 @@ export class KeyTokenService {
         @InjectModel(KeyToken.name) private keyTokenModel: Model<KeyTokenDocument>
     ){}
 
-    async createKeyToken(shopId: string, publicKey: string) {
+    async createKeyToken(shopId: string, publicKey: string, privateKey: string) {
         try {
             const publicKeyString = publicKey.toString();
             const token = await this.keyTokenModel.create({
                 shopId: shopId,
-                publicKey: publicKeyString
+                publicKey: publicKeyString,
+                privateKey
             })
             return token ? token.publicKey : null;
         } catch (e) { 
