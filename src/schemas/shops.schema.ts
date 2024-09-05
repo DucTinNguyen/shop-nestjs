@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { Role, Status } from "src/common/enums";
+import { Status } from "src/common/enums";
 
 export type ShopDocument = HydratedDocument<Shop>
 
@@ -16,14 +16,14 @@ export class Shop {
     @Prop({ required: true })
     password: string
 
-    @Prop({type: String, enum: Status ,default: "inactive"})
+    @Prop({ enum: Status, default: Status.Inactive})
     status: string // active, inactive
 
-    @Prop({default: false})
+    @Prop({ default: false })
     verify: boolean
 
-    @Prop({enum: Role, default: []})
-    roles: Role
+    @Prop({default: [] })
+    roles: string[]
 }
 
 export const ShopSchema = SchemaFactory.createForClass(Shop)

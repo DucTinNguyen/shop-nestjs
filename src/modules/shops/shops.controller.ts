@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SignUpShopRequestDto } from './dtos/sign-up-shop.dto';
 import { ShopsService } from './shops.service';
+import { ResponseType } from 'src/common/dtos';
 
 @Controller('shops')
 @ApiTags("Shop")
@@ -12,7 +13,7 @@ export class ShopsController {
     ) {}
 
     @Post("/sign-up")
-    async signUpShop(@Body() body: SignUpShopRequestDto) {
+    async signUpShop(@Body() body: SignUpShopRequestDto){
         return this.shopService.signUpShop({...body})
     }
 }
