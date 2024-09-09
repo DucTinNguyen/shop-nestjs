@@ -10,15 +10,19 @@ export class KeyTokenService {
         @InjectModel(KeyToken.name) private keyTokenModel: Model<KeyTokenDocument>
     ){}
 
-    async createKeyToken(shopId: string, publicKey: string, privateKey: string) {
+    async createKeyToken(shopId: string, publicKey: string, privateKey: string, refreshToken: string) {
         try {
-            const publicKeyString = publicKey.toString();
-            const token = await this.keyTokenModel.create({
-                shopId: shopId,
-                publicKey: publicKeyString,
-                privateKey
-            })
-            return token ? token.publicKey : null;
+            // const publicKeyString = publicKey.toString();
+            // const token = await this.keyTokenModel.create({
+            //     shopId: shopId,
+            //     publicKey: publicKeyString,
+            //     privateKey
+            // })
+            // return token ? token.publicKey : null;
+
+            const res = await this.keyTokenModel.findOneAndUpdate({ shopId, publicKey, privateKey }, {publicKey, privateKey, refreshToken, refreshTokensUsed: []} , {new: true, upsert: true});
+
+            return res ? res.publicKey : null
         } catch (e) { 
             console.log(e)
         }

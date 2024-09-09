@@ -12,4 +12,8 @@ export class HashingService {
         return passwordHash
     }   
 
+    async comparePassword(password: string, passwordHash: string){
+        return await bcrypt.compare(password, passwordHash)
+    }
+
 }

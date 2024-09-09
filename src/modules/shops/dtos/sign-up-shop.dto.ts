@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from "class-validator";
-import { Status } from "src/common/enums";
+import { Role, Status } from "src/common/enums";
 
 export class SignUpShopRequestDto{
     @IsString()
@@ -26,7 +26,7 @@ export class SignUpShopRequestDto{
 
     @IsArray()
     @IsOptional()
-    @ApiProperty({default: [] })
+    @ApiProperty({default: [Role.User]})
     roles?: string[]
 
 }

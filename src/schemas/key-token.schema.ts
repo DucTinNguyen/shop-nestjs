@@ -16,7 +16,10 @@ export class KeyToken {
     privateKey: string
 
     @Prop({ default: [] })
-    refreshToken: string[]
+    refreshTokensUsed: string[]
+
+    @Prop({ default: [] })
+    refreshToken: string
 }
 
 export const KeyTokenSchema = SchemaFactory.createForClass(KeyToken)

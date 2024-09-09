@@ -2,7 +2,8 @@ export enum Role {
     Shop = "shop",
     Writer = "writer",
     Editor = "editor",
-    Admin = "admin"
+    Admin = "admin",
+    User = "user"
 }
 
 export enum Status {

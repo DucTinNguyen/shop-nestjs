@@ -9,11 +9,10 @@ export class AuthService {
         private jwtService: JwtService
     ){}
 
-    async createTokenPairs(name:string, email: string, privateKey: string) {
+    async createTokenPairs(email: string, privateKey: string) {
         try {
 
             const payload = {
-                name,
                 email
             }
 

@@ -49,7 +49,9 @@ export class ShopsService {
                     publicKeyEncoding: { type: "spki", format: "pem" },
                     privateKeyEncoding: { type: "pkcs8", format: "pem" },
                 })
-                const publicKeyString = await this.keyTokenService.createKeyToken(String(newShop._id), publicKey, privateKey)
+                const token = await this.authService.createTokenPairs(email, privateKey)
+
+                const publicKeyString = await this.keyTokenService.createKeyToken(String(newShop._id), publicKey, privateKey, String(token?.refreshToken))
 
                 if (!publicKeyString) {
                     throw new HttpException("PublicKeyString error", HttpStatus.BAD_REQUEST, {
@@ -59,7 +61,6 @@ export class ShopsService {
                     })
                 }
                 
-                const token = await this.authService.createTokenPairs(name,email, privateKey)
                 
                 await newShop.save()
 
@@ -78,6 +79,45 @@ export class ShopsService {
                     code: MESSAGE_CODES.INTERNAL_SERVER_ERROR
                 }
             })
+        }
+    }
+
+    async signInShop(request: {email: string, password: string}) {
+        const { email, password } = request
+        
+        const shopExist = await this.shopModel.findOne({ email }).lean()
+        if (!shopExist) { 
+            throw new HttpException("Shop not found", HttpStatus.BAD_REQUEST,{cause: {code: MESSAGE_CODES.BAD_REQUEST}})
+        }
+        
+        const isCorrectPassword = await this.hashingService.comparePassword(password, shopExist.password)
+        if (!isCorrectPassword) {
+            throw new HttpException("Password is incorrect", HttpStatus.BAD_REQUEST, { cause: { code: MESSAGE_CODES.PASSWORD_INCORRECT } })
+        }
+        //1. Create new key pair
+        const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+            modulusLength: 4096,
+            publicKeyEncoding: { type: "spki", format: "pem" },
+            privateKeyEncoding: { type: "pkcs8", format: "pem" },
+        })
+        //2. create token based on privatekey
+        const token = await this.authService.createTokenPairs(email, privateKey)
+        //3. Save DB
+        const publicKeyString = await this.keyTokenService.createKeyToken(String(shopExist._id), publicKey, privateKey, String(token?.refreshToken))
+
+        if (!publicKeyString) {
+            throw new HttpException("PublicKeyString error", HttpStatus.BAD_REQUEST, {
+                cause: {
+                    code: MESSAGE_CODES.BAD_REQUEST
+                }
+            })
+        }
+        return {
+            code: MESSAGE_CODES.SUCCESS,
+            data: {
+                accessToken: token?.accessToken,
+                refreshToken: token?.refreshToken
+            }
         }
     }
     
