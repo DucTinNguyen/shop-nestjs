@@ -16,12 +16,6 @@ class EnvironmentVariables {
     @IsString()
     LOG_DIR: string
 
-    @IsString()
-    AUTH_SECRET: string
-
-    @IsNumber()
-    AUTH_EXPIRES_IN: number
-
     @IsBoolean()
     WORKER_ENABLE: boolean
 }

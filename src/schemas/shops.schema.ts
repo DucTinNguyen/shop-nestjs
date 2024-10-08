@@ -22,8 +22,8 @@ export class Shop {
     @Prop({ default: false })
     verify: boolean
 
-    @Prop({default: [Role.User]})
-    roles: string[]
+    @Prop({enum: Role})
+    roles: Role
 }
 
 export const ShopSchema = SchemaFactory.createForClass(Shop)

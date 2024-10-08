@@ -40,7 +40,7 @@ export class ShopsService {
                 name,
                 email,
                 password: passwordHash,
-                roles: [Role.Shop]
+                roles: Role.Shop
             })
 
             if (newShop) {
@@ -121,4 +121,7 @@ export class ShopsService {
         }
     }
     
+    async logoutShop() {
+        return "Logout shop"
+    }
 }

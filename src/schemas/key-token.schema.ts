@@ -18,7 +18,7 @@ export class KeyToken {
     @Prop({ default: [] })
     refreshTokensUsed: string[]
 
-    @Prop({ default: [] })
+    @Prop()
     refreshToken: string
 }
 

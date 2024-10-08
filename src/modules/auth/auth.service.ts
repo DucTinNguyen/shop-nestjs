@@ -35,7 +35,5 @@ export class AuthService {
         catch (e) {
             console.log("--error createTokenPairs", e);
         }
-        
-      
     }
 }

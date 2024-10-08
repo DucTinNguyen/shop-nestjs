@@ -7,7 +7,7 @@ import { ThrottlerModule } from "@nestjs/throttler"
 import { WinstonModule } from "nest-winston"
 import { join } from 'path'
 import { AppController } from "./app.controller"
-import { LoggerMiddleware, RequestTimeoutInterceptor, ThrottlerBehindProxyGuard, TransformInterceptor, ValidationPipe } from "./common"
+import { AuthGuard, LoggerMiddleware, RequestTimeoutInterceptor, TransformInterceptor, ValidationPipe } from "./common"
 import { AllExceptionsFilter } from "./common/exceptions"
 import { validate } from "./common/validations/env.validation"
 import { configurations } from "./configs/config"
@@ -40,28 +40,15 @@ const modules = [ShopsModule]
                 limit: 100
             }
         ]),
-        // OpenTelemetryModule.forRootAsync({
-        //     imports: [ConfigModule],
-        //     inject: [ConfigService],
-        //     useFactory: async (configService: ConfigService) => ({
-        //         serviceName: configService.get<string>("SERVICE_NAME")!,
-        //         autoDetectResources: true,
-        //         traceAutoInjectors: [PipeInjector, GuardInjector, ControllerInjector],
-        //         spanProcessor: new BatchSpanProcessor(
-        //             new OTLPTraceExporter({
-        //                 url: configService.get<string>("TRACE_EXPORTER_URL")!
-        //             })
-        //         )
-        //     })
-        // }),
         ...modules
     ],
     controllers: [AppController],
     providers: [
         {
             provide: APP_GUARD,
-            useClass: ThrottlerBehindProxyGuard
-        },
+            useClass: AuthGuard
+        }
+        ,
         {
             provide: APP_PIPE,
             useClass: ValidationPipe

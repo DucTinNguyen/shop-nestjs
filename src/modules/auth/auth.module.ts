@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
   exports: [AuthService],
   imports: [
     JwtModule.register({
-      global: false,
+      global: true,
       signOptions: {
         algorithm: 'RS256'
       },
