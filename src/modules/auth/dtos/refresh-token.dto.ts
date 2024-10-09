@@ -1,12 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
-export class SignInShopRequestDto{
+export class RefreshTokenDto {
     @IsString()
     @ApiProperty()
-    email: string
-
-    @IsString()
-    @ApiProperty()
-    password: string
+    refreshToken: string; 
 }
