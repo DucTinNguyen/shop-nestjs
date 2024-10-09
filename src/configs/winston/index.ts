@@ -9,8 +9,10 @@ import DailyRotateFile = require("winston-daily-rotate-file")
 
 export class WinstonConfigService implements WinstonModuleOptionsFactory {
     logDir: string
-    constructor(private readonly configService: ConfigService,
-        @Inject(MonitorService) private readonly monitorService: MonitorService) {
+    constructor(
+        private readonly configService: ConfigService,
+        @Inject(MonitorService) private readonly monitorService: MonitorService
+    ) {
         this.logDir = join(process.cwd(), this.configService.get<string>("LOG_DIR")!)
     }
 

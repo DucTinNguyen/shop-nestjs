@@ -7,9 +7,9 @@ import { KeyToken, KeyTokenDocument } from "src/schemas/key-token.schema"
 export class KeyTokenService {
     constructor(@InjectModel(KeyToken.name) private keyTokenModel: Model<KeyTokenDocument>) {}
 
-    async createKeyToken(shopId: string, publicKey: string, privateKey: string, refreshToken: string) {
+    async createKeyToken(userId: string, publicKey: string, privateKey: string, refreshToken: string) {
         try {
-            const res = await this.keyTokenModel.findOneAndUpdate({ shopId}, { publicKey, privateKey, refreshToken, refreshTokensUsed: [] }, { new: true, upsert: true })
+            const res = await this.keyTokenModel.findOneAndUpdate({ userId}, { publicKey, privateKey, refreshToken, refreshTokensUsed: [] }, { new: true, upsert: true })
 
             return res ? res.publicKey : null
         } catch (e) {

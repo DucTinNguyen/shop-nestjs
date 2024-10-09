@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from "@nestjs/common"
-import { Observable, identity, map } from "rxjs"
+import { Observable, map } from "rxjs"
 import { ResponseType } from "../dtos"
 
 @Injectable()
@@ -12,9 +12,9 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ResponseType<
             return next.handle()
         }
 
-        const url  = context.switchToHttp().getRequest().url;
+        const url = context.switchToHttp().getRequest().url
 
-        if(url && url.match(/metadata\/catgm-voucher/) || url.match(/metadata\/collection\/catgm-voucher/)){
+        if ((url && url.match(/metadata\/catgm-voucher/)) || url.match(/metadata\/collection\/catgm-voucher/)) {
             return next.handle()
         }
 

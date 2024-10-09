@@ -1,9 +1,6 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { Public } from 'src/common';
-import { CurrentShop } from 'src/common/decorators/current-shop.decorator';
-import { RefreshTokenDto, SignInShopRequestDto, SignUpShopRequestDto } from './dtos';
-import { AuthService } from './auth.service';
+import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 @ApiTags("Auth")
@@ -15,29 +12,29 @@ export class AuthController {
     ){}
 
 
-    @Public()
-    @Post("/sign-up")
-    @HttpCode(HttpStatus.OK)
-    async signUpShop(@Body() body: SignUpShopRequestDto) {
-        return this.authService.signUpShop({ ...body })
-    }
+    // @Public()
+    // @Post("/sign-up")
+    // @HttpCode(HttpStatus.OK)
+    // async signUpShop(@Body() body: SignUpShopRequestDto) {
+    //     return this.authService.signUpShop({ ...body })
+    // }
 
-    @Public()
-    @Post("/sign-in")
-    @HttpCode(HttpStatus.OK)
-    async signInShop(@Body() body: SignInShopRequestDto) {
-        return this.authService.signInShop({ ...body })
-    }
+    // @Public()
+    // @Post("/sign-in")
+    // @HttpCode(HttpStatus.OK)
+    // async signInShop(@Body() body: SignInShopRequestDto) {
+    //     return this.authService.signInShop({ ...body })
+    // }
 
-    @Post("/logout")
-    @HttpCode(HttpStatus.OK)
-    async logoutShop(@CurrentShop() shopId: string) {
-        return this.authService.logoutShop({ shopId })
-    }
+    // @Post("/logout")
+    // @HttpCode(HttpStatus.OK)
+    // async logoutShop(@CurrentShop() shopId: string) {
+    //     return this.authService.logoutShop({ shopId })
+    // }
 
-    @Post("refresh-token")
-    @HttpCode(HttpStatus.OK)
-    async refreshToken(@Body() body: RefreshTokenDto, @CurrentShop() shopId: string) { 
-        return this.authService.refreshToken({...body, shopId})
-    }
+    // @Post("refresh-token")
+    // @HttpCode(HttpStatus.OK)
+    // async refreshToken(@Body() body: RefreshTokenDto, @CurrentShop() shopId: string) { 
+    //     return this.authService.refreshToken({...body, shopId})
+    // }
 }

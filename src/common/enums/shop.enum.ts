@@ -8,5 +8,5 @@ export enum Role {
 
 export enum Status {
     Inactive = "inactive",
-    Active = "active",
-}   
+    Active = "active"
+}
