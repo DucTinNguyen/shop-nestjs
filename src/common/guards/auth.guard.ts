@@ -2,11 +2,11 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } 
 import { ConfigService } from "@nestjs/config"
 import { Reflector } from "@nestjs/core"
 import { JwtService } from "@nestjs/jwt"
+import { AuthRepository } from "src/modules/auth/auth.repository"
 import { MESSAGE_CODES } from "../constants"
 import { IS_PUBLIC_KEY } from "../decorators/public.decorator"
 import { ROLES_KEY } from "../decorators/roles.decorators"
 import { Role } from "../enums"
-import { AuthRepository } from "src/modules/auth/auth.repository"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,16 +36,16 @@ export class AuthGuard implements CanActivate {
             })
         }
 
-        const { publicKey, shopId } = await this.jwtService.decode(token)
-        const keyTokenItem = await this.authRepository.getShopKeyItem(shopId)
+        const { publicKey, userId } = await this.jwtService.decode(token)
+        const keyTokenItem = await this.authRepository.getUserKeyItem(userId)
 
-        if (!keyTokenItem || !keyTokenItem.publicKey || !keyTokenItem.privateKey) {
+        if (!keyTokenItem || !keyTokenItem.refreshToken) {
             throw new HttpException("unauthorized", HttpStatus.UNAUTHORIZED, {
                 cause: {
                     code: MESSAGE_CODES.UNAUTHORIZED
                 }
             })
-         }
+        }
 
         try {
             const payload = await this.jwtService.verifyAsync(token, {
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate {
                 algorithms: ["RS256"]
             })
             console.log("-----payload", payload)
-            request["shopId"] = payload.shopId
+            request["userId"] = payload.userId
 
         } catch (error: any) {
             console.log("---error", error)

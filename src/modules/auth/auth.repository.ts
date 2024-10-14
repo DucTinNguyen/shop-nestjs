@@ -10,7 +10,7 @@ export class AuthRepository {
         @InjectModel(KeyToken.name) private keyTokenModel: Model<KeyToken>
     ){}
 
-    async getShopKeyItem(shopId: string) {
-        return await this.keyTokenModel.findOne({ shopId })
+    async getUserKeyItem(userId: string) {
+        return await this.keyTokenModel.findById(userId)
     }
 }

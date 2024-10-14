@@ -23,5 +23,6 @@ export const MESSAGE_CODES = {
     YOU_ARE_NOT_ELIGIBLE: "you_are_not_eligible",
     AIRDROP_ALREADY_CLAIMED: "airdrop_already_claimed",
     ALREADY_EXIST: "already_exists",
-    PASSWORD_INCORRECT: "password_incorrect"
+    PASSWORD_INCORRECT: "password_incorrect",
+    INVALID: "invalid"
 }

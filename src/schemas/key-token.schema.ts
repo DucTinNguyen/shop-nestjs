@@ -3,7 +3,7 @@ import { HydratedDocument } from "mongoose"
 
 export type KeyTokenDocument = HydratedDocument<KeyToken>
 
-@Schema({ collection: "key_items", versionKey: false })
+@Schema({ collection: "key_items", versionKey: false, timestamps: true })
 export class KeyToken {
     @Prop({ required: true })
     userId: string

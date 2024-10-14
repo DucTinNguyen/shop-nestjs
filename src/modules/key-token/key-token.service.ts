@@ -9,7 +9,7 @@ export class KeyTokenService {
 
     async createKeyToken(userId: string, publicKey: string, privateKey: string, refreshToken: string) {
         try {
-            const res = await this.keyTokenModel.findOneAndUpdate({ userId}, { publicKey, privateKey, refreshToken, refreshTokensUsed: [] }, { new: true, upsert: true })
+            const res = await this.keyTokenModel.findOneAndUpdate({ userId}, { publicKey, privateKey, refreshToken }, { new: true, upsert: true })
 
             return res ? res.publicKey : null
         } catch (e) {

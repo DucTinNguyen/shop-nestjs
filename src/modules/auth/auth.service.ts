@@ -8,12 +8,12 @@ export class AuthService {
     ) { }
     private readonly logger = new Logger(AuthService.name)
 
-    async createTokenPairs(email: string, privateKey: string, publicKey: string, shopId: string) {
+    async createTokenPairs(email: string, privateKey: string, publicKey: string, userId: string) {
         try {
             const payload = {
                 email,
                 publicKey,
-                shopId
+                userId
             }
 
             const accessToken = await this.jwtService.signAsync(payload, {
@@ -35,67 +35,6 @@ export class AuthService {
             console.log("--error createTokenPairs", e)
         }
     }
-
-    // async signUpShop(request: { name: string; email: string; password: string; status?: string; verify?: boolean; roles?: string[] }) {
-    //     const { name, email, password } = request
-
-    //     const existShop = await this.shopModel.findOne({ email }).lean()
-
-    //     if (existShop) {
-    //         throw new HttpException("Shop already exists", HttpStatus.BAD_REQUEST, {
-    //             cause: {
-    //                 code: MESSAGE_CODES.ALREADY_EXIST
-    //             }
-    //         })
-    //     }
-
-    //     try {
-    //         const passwordHash = await this.hashingService.hashPassword(password)
-
-    //         const newShop = new this.shopModel({
-    //             name,
-    //             email,
-    //             password: passwordHash,
-    //             roles: Role.Shop
-    //         })
-
-    //         if (newShop) {
-    //             const { publicKey, privateKey } = await generateKeyPairSync("rsa", {
-    //                 modulusLength: 4096,
-    //                 publicKeyEncoding: { type: "spki", format: "pem" },
-    //                 privateKeyEncoding: { type: "pkcs8", format: "pem" }
-    //             })
-    //             const token = await this.createTokenPairs(email, privateKey, publicKey, String(newShop._id))
-
-    //             const publicKeyString = await this.keyTokenService.createKeyToken(String(newShop._id), publicKey, privateKey, String(token?.refreshToken))
-
-    //             if (!publicKeyString) {
-    //                 throw new HttpException("PublicKeyString error", HttpStatus.BAD_REQUEST, {
-    //                     cause: {
-    //                         code: MESSAGE_CODES.BAD_REQUEST
-    //                     }
-    //                 })
-    //             }
-
-    //             await newShop.save()
-
-    //             return {
-    //                 code: MESSAGE_CODES.SUCCESS,
-    //                 data: {
-    //                     accessToken: token?.accessToken,
-    //                     refreshToken: token?.refreshToken
-    //                 }
-    //             }
-    //         }
-    //     } catch (err) {
-    //         console.log(err)
-    //         throw new HttpException("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR, {
-    //             cause: {
-    //                 code: MESSAGE_CODES.INTERNAL_SERVER_ERROR
-    //             }
-    //         })
-    //     }
-    // }
 
     // async signInShop(request: { email: string; password: string }) {
     //     const { email, password } = request
