@@ -11,6 +11,6 @@ export class AuthRepository {
     ){}
 
     async getUserKeyItem(userId: string) {
-        return await this.keyTokenModel.findById(userId)
+        return await this.keyTokenModel.findOne({userId})
     }
 }

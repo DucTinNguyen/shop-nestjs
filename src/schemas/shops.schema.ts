@@ -4,7 +4,7 @@ import { Status } from "src/common/enums"
 
 export type ShopDocument = HydratedDocument<Shop>
 
-@Schema({ collection: "shops", versionKey: false })
+@Schema({ collection: "shops", versionKey: false, timestamps: true })
 export class Shop {
 
     @Prop()
@@ -16,8 +16,8 @@ export class Shop {
     @Prop({required: true })
     email: string
 
-    @Prop({ enum: Status, default: Status.Inactive })
-    status: string // active, inactive
+    @Prop({ enum: Status, default: Status.Active })
+    status: Status // active, inactive
 
     @Prop({ default: false })
     verify: boolean

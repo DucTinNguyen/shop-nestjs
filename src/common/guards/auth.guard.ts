@@ -52,7 +52,6 @@ export class AuthGuard implements CanActivate {
                 publicKey,
                 algorithms: ["RS256"]
             })
-            console.log("-----payload", payload)
             request["userId"] = payload.userId
 
         } catch (error: any) {
