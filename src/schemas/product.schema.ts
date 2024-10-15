@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
+import { ProductCategory } from "src/common/enums";
 
 
 export type ProductDocument = HydratedDocument<Product>
 
 
 @Schema({
-    versionKey: false,
+    versionKey: true,
     timestamps: true
 })
 export class Product {
@@ -23,13 +24,16 @@ export class Product {
     @Prop()
     price: number
 
-    @Prop()
-    category: string
+    @Prop({enum: ProductCategory})
+    category: ProductCategory
 
     @Prop()
     stock: number
 
     @Prop()
+    sold: number
+
+    @Prop({default: 0})
     rating: number
 
 }
